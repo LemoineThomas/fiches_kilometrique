@@ -1,23 +1,16 @@
 {
-  "name": "fiches_kilometrique",
-  "version": "1.0.0",
-  "description": "Electron vous permet de créer des applications de bureau avec du pur JavaScript fournissant un runtime avec des API natives riches (système d'exploitation). Vous pouvez le voir comme une variante de node.js qui se concentre sur les applications de bureau au lieu des serveur web.",
-  "main": "main.js",
+  "name": "fiches-kilometrique",
+  "version": "0.0.0",
+  "private": true,
   "scripts": {
-    "start": "electron .",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node ./bin/www"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/LemoineThomas/fiches_kilometrique.git"
-  },
-  "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/LemoineThomas/fiches_kilometrique/issues"
-  },
-  "homepage": "https://github.com/LemoineThomas/fiches_kilometrique#readme",
-  "devDependencies": {
-    "electron": "^10.1.2"
+  "dependencies": {
+    "cookie-parser": "^1.4.5",
+    "debug": "~2.6.9",
+    "ejs": "~2.6.1",
+    "express": "~4.16.1",
+    "http-errors": "~1.6.3",
+    "morgan": "~1.9.1"
   }
 }
