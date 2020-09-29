@@ -6,7 +6,8 @@
   "scripts": {
     "start-electron": "electron .",
     "start": "electron .",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "postinstall": "install-app-deps"
   },
   "repository": {
     "type": "git",
@@ -19,10 +20,13 @@
   },
   "homepage": "https://github.com/LemoineThomas/fiches_kilometrique#readme",
   "devDependencies": {
-    "electron": "^10.1.2"
+    "electron": "^10.1.2",
+    "electron-builder": "^22.8.1"
   },
   "dependencies": {
     "ejs": "^3.1.5",
-    "express-ejs-layouts": "^2.5.0"
+    "express-ejs-layouts": "^2.5.0",
+    "sequelize": "^6.3.5",
+    "sqlite3": "^5.0.0"
   }
 }

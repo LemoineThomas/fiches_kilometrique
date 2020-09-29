@@ -49,7 +49,7 @@ function init(callback) {
     expressApp.use(express.static(path.join(__dirname, 'assets')));
  
     /* views est défini comme notre dossier de vues par défaut */
-    expressApp.set('views', path.join(__dirname, '/views/'));
+    expressApp.set('views', path.join(__dirname, '../views/'));
  
     if (typeof callback != 'undefined') {
         callback();
@@ -61,6 +61,22 @@ function init(callback) {
 function loadRoutes(callback) {
     expressApp.get('/', function (req, res) {
         res.render('homepage/index');
+    });
+
+    expressApp.get('/createCar', function (req, res) {
+        res.render('dashboard/createCar');
+    });
+
+    expressApp.get('/createEntity', function (req, res) {
+        res.render('dashboard/createEntity');
+    });
+
+    expressApp.get('/createFiche', function (req, res) {
+        res.render('dashboard/createFiche');
+    });
+
+    expressApp.get('/viewIndemnity', function (req, res) {
+        res.render('dashboard/viewIndemnity');
     });
  
     if (typeof callback != 'undefined') {
