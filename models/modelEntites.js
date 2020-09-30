@@ -2,7 +2,7 @@ const { Sequelize, DataTypes} = require('sequelize');
 const sequelize = new Sequelize('sqlite::memory');
 
 
-const Entite = sequelize.define('Entite', {
+const Entites = sequelize.define('Entites', {
     id: {
         type: DataTypes.INTEGER,
         autoIncrement: true,
@@ -16,9 +16,8 @@ const Entite = sequelize.define('Entite', {
     },
     type: {
         type: DataTypes.STRING,
-        allowNull: false,
-        unique: true
+        allowNull: false
     }
 }, { timestamps: true });
 
-module.exports = Entite;
+module.exports = Entites;

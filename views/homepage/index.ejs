@@ -1,15 +1,21 @@
-<form class="text-center border border-light p-5" action="#!">
+<%- include ('../header_login.ejs') %>
+<form class="text-center border border-light p-5" action="/login" method="POST">
 
     <p class="h4 mb-4">Connexion</p>
 
     <!-- Email -->
-    <input type="email" id="defaultSubscriptionFormEmail" class="form-control mb-4" placeholder="E-mail">
+    <input type="email" id="defaultSubscriptionFormEmail" class="form-control mb-4" placeholder="E-mail" name="email">
 
     <!-- Password -->
-    <input type="password" id="defaultSubscriptionFormPassword" class="form-control mb-4" placeholder="Mot de passe">
+    <input type="password" id="defaultSubscriptionFormPassword" class="form-control mb-4" placeholder="Mot de passe" name="mdp">
 
     <!-- Sign in button -->
     <button class="btn btn-info btn-block" type="submit">Connexion</button>
+    <a class="btn btn-info btn-block" href="/inscription">Inscription</a>
+    <a class="btn btn-info btn-block" href="/createCar">Vehicules</a>
+    
 
 
 </form>
+
+<%- include ('../footer.ejs') %>

@@ -1,0 +1,30 @@
+<%- include ('../header_login.ejs') %>
+<form class="text-center border border-light p-5" action="/inscription" method="POST">
+
+    <p class="h4 mb-4">Inscription</p>
+
+    <!-- Email -->
+    <input type="email" id="defaultSubscriptionFormEmail" class="form-control mb-4" placeholder="E-mail" name="email">
+
+    <!-- Mdp -->
+    <input type="password" id="defaultSubscriptionFormPassword" class="form-control mb-4" placeholder="Mot de passe" name="mdp">
+
+    <!-- Nom -->
+    <input type="text" class="form-control  mb-4" id="formGroupExampleInput" placeholder="Nom" name="nom">
+
+    <!-- Prénom -->
+    <input type="text" class="form-control  mb-4" id="formGroupExampleInput1" placeholder="Prénom" name="prenom">
+
+    <!-- Fonction -->
+    <input type="text" class="form-control  mb-4" id="formGroupExampleInput2" placeholder="Fonction" name="fonction">
+
+
+    <!-- Connexion -->
+    <button class="btn btn-info btn-block" type="submit">Valider</button>
+    <a class="btn btn-info btn-block" href="/">Retour</a>
+    
+
+
+</form>
+
+<%- include ('../footer.ejs') %>

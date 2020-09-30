@@ -3,6 +3,10 @@ var app = {};
 function start(callback) {
     init(function() {
         /* On démarre le routeur défini juste avant */
+        /**c ici ton probleme */
+        /*je sais, quand je fais la solution sans controller, j'ai pas de problème */
+        /**je modifi ton fichier router essaye dans un instant */
+        /* ok */
         app.router.start(function() {
             if(typeof callback != 'undefined') {
                 callback();
@@ -16,8 +20,8 @@ function init(callback) {
 
     // Option 2: Passing parameters separately (sqlite)
     const sequelize = new Sequelize({
-    dialect: 'sqlite',
-    storage: 'path/to/database.sqlite'
+        dialect: 'sqlite',
+        storage: 'path/to/database.sqlite'
     });
 
     try {
@@ -28,7 +32,7 @@ function init(callback) {
     }
 
     /* On instancie notre module router */
-    app.router = require('./routes/router');
+    app.router = require('./router');
  
     if(typeof callback != 'undefined') {
         callback();
