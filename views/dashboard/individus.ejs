@@ -1,0 +1,22 @@
+<%- include ('../layout.ejs') %>
+<h2 class="mt-4"><%= title %></h2>
+
+<table class="table table-hover">
+    <thead>
+      <tr>
+        <th scope="col">Nom</th>
+        <th scope="col">Prénom</th>
+        <th scope="col">Fonction</th>
+      </tr>
+    </thead>
+    <tbody>
+        <%  individus.forEach(element => { %>
+            <tr>
+                <td><%= element.nom %></td>
+                <td><%= element.prenom %></td>
+                <td>@<%= element.fonction %></td>
+            </tr>
+        <% }) %>
+    </tbody>
+</table>
+<%- include ('../footer.ejs') %>

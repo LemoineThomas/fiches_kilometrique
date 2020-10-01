@@ -4,33 +4,34 @@
 <head>
     <meta charset="UTF-8">
     <title>Hello World!</title>
-    <link rel="stylesheet" href="css/bootstrap.min.css" />
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-</head>
+    
+    <!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous"> -->
+    <link rel="stylesheet" href="../css/bootstrap.min.css" />
+    <link href="../css/simple-sidebar.css" rel="stylesheet">
+  </head>
  
 <body>
-    <nav class="navbar navbar-dark bg-light">
-        <a class="navbar-brand">Fiches kilométrique</a>
-        <a class="navbar-brand" href="/createCar">createCar</a>
-        <a class="navbar-brand" href="/createEntity">createEntity</a>
-        <a class="navbar-brand" href="/createFiche">createFiche</a>
-        <a class="navbar-brand" href="/viewIndemnity">createIndemnity</a>
-        <button class="btn btn-outline-danger" id="quit">Déconnexion</button>
-    </nav>
-    
-    <div class="container">
-        <div class="container-fluid h-100">
-            <div class="row h-100">
-              <aside class="col-12 col-md-2 p-0 bg-dark">
-                <nav class="navbar navbar-expand navbar-dark bg-dark flex-md-column flex-row align-items-start">
-                  <div class="collapse navbar-collapse">
-                    <ul class="flex-md-column flex-row navbar-nav w-100 justify-content-between">
-                      <li class="nav-item">
-                         <a class="nav-link pl-0" href="#">Menu 1</a>
-                      </li>
-                      <!-- Insérez ici le reste de votre menu -->            
-                    </ul>
-                  </div>
-                </nav>
-              </aside>
-              <main class="col">
+  <div class="d-flex" id="wrapper">
+
+    <!-- Sidebar -->
+    <div class="bg-light border-right" id="sidebar-wrapper">
+      <div class="sidebar-heading">Fiches Kilométrique </div>
+      <div class="list-group list-group-flush">
+        <a href="/dashboard" class="list-group-item list-group-item-action bg-light">Dashboard</a>
+        <a href="/entites" class="list-group-item list-group-item-action bg-light">Entités</a>
+        <a href="/vehicules" class="list-group-item list-group-item-action bg-light">Vehicules</a>
+        <a href="/individus" class="list-group-item list-group-item-action bg-light">Individus</a>
+        <a href="/fiches" class="list-group-item list-group-item-action bg-light">Fiches</a>
+        <a href="/indemnites" class="list-group-item list-group-item-action bg-light">Indemnités</a>
+      </div>
+    </div>
+    <!-- /#sidebar-wrapper -->
+
+    <!-- Page Content -->
+    <div id="page-content-wrapper">
+
+      <nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom">
+        <button class="btn btn-primary" id="menu-toggle">Menu</button>
+      </nav>
+
+      <div class="container-fluid">

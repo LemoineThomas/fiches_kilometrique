@@ -68,7 +68,7 @@ function init(callback) {
     expressApp.set('view engine', 'ejs');
  
     /* assets sera le répertoire où se trouverons nos fichiers côté client */
-    expressApp.use(express.static(path.join(__dirname, 'assets')));
+    expressApp.use(express.static(path.join(__dirname, 'public')));
      
     /* views est défini comme notre dossier de vues par défaut */
     expressApp.set('views', path.join(__dirname, '/views/'));
@@ -89,13 +89,18 @@ function loadRoutes(callback) {
     expressApp.post('/login', indexController.login);
     expressApp.get('/inscription', indexController.viewInscription);
     expressApp.post('/inscription', indexController.inscription);
+    expressApp.get('/vehicules', indexController.vehicules);
     expressApp.get('/createCar', indexController.viewCreateCar);
     expressApp.post('/createCar', indexController.createCar);
+    expressApp.get('/entites', indexController.entites);
     expressApp.get('/createEntity', indexController.viewCreateEntity);
     expressApp.post('/createEntity', indexController.createEntity);
+    expressApp.get('/fiches', indexController.fiches);
     expressApp.get('/createFiche', indexController.viewCreateFiche);
     expressApp.post('/createFiche', indexController.createFiche);
     expressApp.get('/viewIndemnity', indexController.viewIndemnity);
+    expressApp.get('/individus', indexController.individus);
+    expressApp.get('/dashboard', indexController.dashboard);
  
     if (typeof callback != 'undefined') {
         callback();

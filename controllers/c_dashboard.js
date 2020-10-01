@@ -109,9 +109,18 @@ controller.inscription = async (req, res) => {
     
 }
 
+controller.vehicules = async (req, res) => {
+    await Vehicules.sync()
+    const vehicules = await Vehicules.findAll({})
+
+    res.render('dashboard/vehicules.ejs', {
+        title: "Liste des véhicules"
+    })
+}
+
 controller.viewCreateCar = async (req, res) => {
     res.render('dashboard/createCar.ejs', {
-        title: "Créer une voiture"
+        title: "Créer un véhicule"
     })
 }
 
@@ -126,6 +135,15 @@ controller.createCar = async (req, res) => {
     });
     res.render('dashboard/createCar.ejs', {
         title: "Créer une voiture"
+    })
+}
+
+controller.entites = async (req, res) => {
+    await Entites.sync()
+    const entites = await Entites.findAll({})
+
+    res.render('dashboard/entites.ejs', {
+        title: "Liste des entités"
     })
 }
 
@@ -145,6 +163,15 @@ controller.createEntity = async (req, res) => {
     })
 }
 
+controller.fiches = async (req, res) => {
+    await Fiches.sync()
+    const fiches = await Fiches.findAll({})
+
+    res.render('dashboard/fiches.ejs', {
+        title: "Liste des fiches"
+    })
+}
+
 controller.viewCreateFiche = async (req, res) => {
     res.render('dashboard/createFiche.ejs', {
         title: "Créer une fiches"
@@ -152,7 +179,7 @@ controller.viewCreateFiche = async (req, res) => {
 }
 
 controller.createFiche = async (req, res) => {
-    const entite = await Entites.create({
+    const fiche = await Entites.create({
         compteurDepart : "test",
         compteurArrivee : "test",
         date : "test",
@@ -169,6 +196,22 @@ controller.createFiche = async (req, res) => {
 controller.viewIndemnity = async (req, res) => {
     res.render('dashboard/viewIndemnity.ejs', {
         title: "Indemnité"
+    })
+}
+
+controller.individus = async (req, res) => {
+    await Individus.sync()
+    const individus = await Individus.findAll({})
+    console.log(individus)
+    res.render('dashboard/individus.ejs', {
+        title: "Liste des individus",
+        individus : individus
+    })
+}
+
+controller.dashboard = async (req, res) => {
+    res.render('dashboard/dashboard.ejs', {
+        title: "Dashboard"
     })
 }
 

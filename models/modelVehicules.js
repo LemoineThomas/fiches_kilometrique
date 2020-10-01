@@ -1,6 +1,9 @@
 const { Sequelize, DataTypes} = require('sequelize');
-const sequelize = new Sequelize('sqlite::memory');
-
+// const sequelize = new Sequelize('sqlite::memory');
+const sequelize = new Sequelize({
+    dialect: 'sqlite',
+    storage: 'path/to/database.sqlite'
+});
 
 const Vehicules = sequelize.define('Vehicules', {
     id: {
