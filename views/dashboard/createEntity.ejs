@@ -1,6 +1,6 @@
 <%- include ('../layout.ejs') %>
 <h2 class="mt-4"><%= title %></h2>
-<form>
+<form action="/createEntity" method="POST">
     <div class="form-group">
         <label for="formGroupExampleInput">Nom</label>
         <input type="text" class="form-control" id="formGroupExampleInput" placeholder="Nom de l'entité">

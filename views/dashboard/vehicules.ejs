@@ -1,3 +1,26 @@
 <%- include ('../layout.ejs') %>
 <h2 class="mt-4"><%= title %></h2>
+<% if (vehicules != "") { %>
+    <table class="table table-hover">
+        <thead>
+          <tr>
+            <th scope="col">Nom</th>
+            <th scope="col">Prénom</th>
+            <th scope="col">Fonction</th>
+          </tr>
+        </thead>
+        <tbody>
+            <%  vehicules.forEach(element => { %>
+                <tr>
+                    <td><%= element.nom %></td>
+                    <td><%= element.prenom %></td>
+                    <td>@<%= element.fonction %></td>
+                </tr>
+            <% }) %>
+        </tbody>
+    </table>
+    <% }else{ %>
+        <p>Aucun vehicule enregistré.</p>
+    <% } %>
+    <a class="btn btn-info btn-block" href="/createCar">Ajouter</a>
 <%- include ('../footer.ejs') %>

@@ -56,7 +56,7 @@ controller.login = async (req, res) => {
                 //   message: "Bienvenu "
                 // }
                 console.log('Bienvenu')
-                res.redirect('/createCar/')
+                res.redirect('/dashboard/')
             }
         } catch (error) {
         //   req.session.msgFlash = {
@@ -126,16 +126,34 @@ controller.viewCreateCar = async (req, res) => {
 
 controller.createCar = async (req, res) => {
     await Vehicules.sync()
-    const vehicule = await Vehicules.create({
-        marque : "test",
-        modele : "test",
-        puissance : "test",
-        annee : "test",
-        immatriculation : "test"
-    });
-    res.render('dashboard/createCar.ejs', {
-        title: "Créer une voiture"
-    })
+    var immatriculation = await Vehicules.findOne({ immatriculation: req.body.immatriculation})
+    
+    if(!immatriculation){
+        try{
+            const vehicule = await Vehicules.create({
+                marque : req.body.marque,
+                modele : req.body.modele,
+                puissance : req.body.puissance,
+                annee : req.body.annee,
+                immatriculation : req.body.immatriculation
+            });
+
+        } catch (error) {
+            console.log(error)
+            res.redirect('/createCar', )
+        }
+    
+        res.render('dashboard/createCar.ejs', {
+            title: "Ajouter un véhicule",
+            message: "Véhicule ajouté !"
+        })
+    }else{
+        res.render('dashboard/createCar.ejs', {
+            title: "Ajouter un véhicule",
+            message: "Cet immatriculation existe déjà !"
+        })
+    }
+
 }
 
 controller.entites = async (req, res) => {
@@ -143,7 +161,8 @@ controller.entites = async (req, res) => {
     const entites = await Entites.findAll({})
 
     res.render('dashboard/entites.ejs', {
-        title: "Liste des entités"
+        title: "Liste des entités",
+        entites: entites
     })
 }
 
@@ -154,13 +173,32 @@ controller.viewCreateEntity = async (req, res) => {
 }
 
 controller.createEntity = async (req, res) => {
-    const entite = await Entites.create({
-        nom : "test",
-        type : "test"
-    });
-    res.render('dashboard/createEntity.ejs', {
-        title: "Créer une entité"
-    })
+    
+    var entite = await Entites.findOne({ nom: req.body.nom})
+    
+    if(!entite){
+        try{
+            const entite = await Entites.create({
+                nom : req.body.nom,
+                type : req.body.type
+            });
+
+        } catch (error) {
+            console.log(error)
+            res.redirect('/createEntity', )
+        }
+    
+        res.render('dashboard/createEntity.ejs', {
+            title: "Ajouter une entité",
+            message: "Entité ajoutée !"
+        })
+    }else{
+        res.render('dashboard/createEntity.ejs', {
+            title: "Ajouter une entité",
+            message: "Cette entité existe déjà !"
+        })
+    }
+
 }
 
 controller.fiches = async (req, res) => {
