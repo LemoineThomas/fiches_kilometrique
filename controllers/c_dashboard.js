@@ -2,6 +2,8 @@ const Entites = require("../models/modelEntites");
 const Fiches = require("../models/modelFiches");
 const Individus = require("../models/modelIndividus");
 const Vehicules = require("../models/modelVehicules");
+const Objet = require("../models/modelObjet");
+
 
 var express     = require("express"),
 request         = require('request'),
@@ -9,6 +11,7 @@ request         = require('request'),
 app             = express();
 app.set("view engine", "ejs");
 app.use(express.static(__dirname+"/public"));
+
 
 var controller = {}
 
@@ -26,10 +29,10 @@ controller.login = async (req, res) => {
       console.log(email)
       console.log(mdp)
       if (!email || !mdp) {
-        // req.session.msgFlash = {
-        //   type: "danger",
-        //   message: "Donnée manquante"
-        // }
+        req.session.msgFlash = {
+          type: "danger",
+          message: "Donnée manquante"
+        }
         console.log('Donnée manquante')
         res.redirect('/')
       } else {
@@ -42,27 +45,27 @@ controller.login = async (req, res) => {
             console.log(indi)
             
             if (!individus || (individus.email !== email && individus.mdp !== mdp)) {
-                // req.session.msgFlash = {
-                //   type: "danger",
-                //   message: "Identifiants invalide"
-                // }
+                req.session.msgFlash = {
+                  type: "danger",
+                  message: "Identifiants invalide"
+                }
                 console.log('Identifiants invalide 1')
                 res.redirect('/')
             } else {
-                // req.session.user = individus // use session for user connected
-                // console.log(req.session)
-                // req.session.msgFlash = {
-                //   type: "success",
-                //   message: "Bienvenu "
-                // }
+                req.session.user = individus // use session for user connected
+                console.log(req.session.user.id)
+                req.session.msgFlash = {
+                  type: "success",
+                  message: "Bienvenu "
+                }
                 console.log('Bienvenu')
                 res.redirect('/dashboard/')
             }
         } catch (error) {
-        //   req.session.msgFlash = {
-        //     type: "error",
-        //     message: "Identifiants invalide"
-        //   }
+          req.session.msgFlash = {
+            type: "error",
+            message: "Identifiants invalide"
+          }
             console.log(error)
             res.redirect('/', )
         }
@@ -114,7 +117,8 @@ controller.vehicules = async (req, res) => {
     const vehicules = await Vehicules.findAll({})
 
     res.render('dashboard/vehicules.ejs', {
-        title: "Liste des véhicules"
+        title: "Liste des véhicules",
+        vehicules: vehicules
     })
 }
 
@@ -135,18 +139,21 @@ controller.createCar = async (req, res) => {
                 modele : req.body.modele,
                 puissance : req.body.puissance,
                 annee : req.body.annee,
-                immatriculation : req.body.immatriculation
+                immatriculation : req.body.immatriculation,
+                id_individus: req.session.user.id
             });
 
         } catch (error) {
             console.log(error)
             res.redirect('/createCar', )
         }
-    
-        res.render('dashboard/createCar.ejs', {
-            title: "Ajouter un véhicule",
-            message: "Véhicule ajouté !"
-        })
+        //const vehicules = await Vehicules.findAll({})
+        res.end() 
+        // res.render('dashboard/vehicules.ejs', {
+        //     title: "Ajouter un véhicule",
+        //     message: "Véhicule ajouté !",
+        //     vehicules: vehicules
+        // })
     }else{
         res.render('dashboard/createCar.ejs', {
             title: "Ajouter un véhicule",
@@ -187,10 +194,11 @@ controller.createEntity = async (req, res) => {
             console.log(error)
             res.redirect('/createEntity', )
         }
-    
-        res.render('dashboard/createEntity.ejs', {
+        const entites = await Entites.findAll({})
+        res.render('dashboard/entites.ejs', {
             title: "Ajouter une entité",
-            message: "Entité ajoutée !"
+            message: "Entité ajoutée !",
+            entites: entites
         })
     }else{
         res.render('dashboard/createEntity.ejs', {
@@ -202,32 +210,47 @@ controller.createEntity = async (req, res) => {
 }
 
 controller.fiches = async (req, res) => {
+
     await Fiches.sync()
     const fiches = await Fiches.findAll({})
 
     res.render('dashboard/fiches.ejs', {
-        title: "Liste des fiches"
+        title: "Liste des fiches",
+        fiches: fiches
     })
 }
 
 controller.viewCreateFiche = async (req, res) => {
+    const entites = await Entites.findAll({})
+    const vehicules = await Vehicules.findAll({})
+    const objets = await Objet.findAll({})
+
     res.render('dashboard/createFiche.ejs', {
-        title: "Créer une fiches"
+        title: "Créer une fiches",
+        entites: entites,
+        vehicules: vehicules,
+        objets: objets
     })
 }
 
 controller.createFiche = async (req, res) => {
-    const fiche = await Entites.create({
-        compteurDepart : "test",
-        compteurArrivee : "test",
-        date : "test",
-        lieuDepart : "test",
-        lieuArrivee : "test",
-        commentaire : "test"
+    const fiche = await Fiches.create({
+        compteurDepart : req.body.compteurD,
+        compteurArrivee : req.body.compteurA,
+        date : req.body.date,
+        lieuDepart : req.body.lieuD,
+        lieuArrivee : req.body.lieuA,
+        commentaire : req.body.commentaire,
+        id_individus: req.body.individus,
+        id_vehicule: req.body.vehicule,
+        id_entite: req.body.entite,
+        id_objet: req.body.objet
     });
 
+    const fiches = await Fiches.findAll({})
     res.render('dashboard/createFiche.ejs', {
-        title: "Créer une fiches"
+        title: "Créer une fiches",
+        fiches: fiches
     })
 }
 
@@ -251,6 +274,48 @@ controller.dashboard = async (req, res) => {
     res.render('dashboard/dashboard.ejs', {
         title: "Dashboard"
     })
+}
+
+controller.objet = async (req, res) => {
+    await Objet.sync()
+    const objets = await Objet.findAll({})
+
+    res.render('dashboard/objet.ejs', {
+        title: "Liste des objets",
+        objets: objets
+    })
+}
+
+controller.createObjet = async (req, res) => {
+    //await Objet.sync()
+
+    var objet = await Objet.findOne({ where: { nom: req.body.nom} })
+    
+    if(!objet){
+        try{
+            const objett = await Objet.create({
+                nom : req.body.nom
+            });
+
+        } catch (error) {
+            console.log(error)
+            res.redirect('/objet', )
+        }
+        const objets = await Objet.findAll({})
+        res.render('dashboard/objet.ejs', {
+            title: "Liste des objets",
+            message: "Objet ajouté !",
+            objets: objets
+        })
+    }else{
+        const objets = await Objet.findAll({})
+        res.render('dashboard/objet.ejs', {
+            title: "Liste des objets",
+            message: "Cet objet existe déjà !",
+            objets: objets
+        })
+    }
+
 }
 
 module.exports = controller;

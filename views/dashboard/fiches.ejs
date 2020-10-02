@@ -1,3 +1,24 @@
 <%- include ('../layout.ejs') %>
 <h2 class="mt-4"><%= title %></h2>
+
+<% if (fiches != "") { %>
+    <table class="table table-hover">
+        <thead>
+          <tr>
+            <th scope="col">Date</th>
+          </tr>
+        </thead>
+        <tbody>
+            <%  fiches.forEach(element => { %>
+                <tr>
+                    <td><%= element.date %></td>
+                </tr>
+            <% }) %>
+        </tbody>
+    </table>
+<% }else{ %>
+    <p>Aucune fiche n'a été ajoutée.</p>
+<% } %>
+
+<a class="btn btn-info btn-block" href="/createFiche">Créer une fiche</a>
 <%- include ('../footer.ejs') %>

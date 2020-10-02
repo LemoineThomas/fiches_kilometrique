@@ -1,22 +1,3 @@
-// var express = require('express');
-// var router = express.Router();
-// var indexController = require('../controllers/c_dashboard.js');
-// const app = express()
-// router.use(express.urlencoded({
-//     extended: true
-// }))
-
-
-// router.get('/', indexController.visulogin);
-// router.get('/createCar', indexController.createCar);
-// router.get('/createEntity', indexController.createEntity);
-// router.get('/createFiche', indexController.createFiche);
-// router.get('/viewIndemnity', indexController.viewIndemnity);
-
-
-
-// module.exports = router;
-
 /* Appel de tous nos outils */
 const express = require('express');
 const expressApp = express();
@@ -27,7 +8,15 @@ const path = require('path');
 const indexController = require('./controllers/c_dashboard.js');
 
 var bodyParser = require('body-parser')
+const cookieSession = require('cookie-session')
 
+expressApp.use(cookieSession({
+    name: 'simplonFiche',
+    keys: ['asq4b4PR'],
+
+    // Cookie Options
+    maxAge: 24 * 60 * 60 * 1000 // 24 hours
+}))
 expressApp.use(bodyParser.urlencoded({ extended: false }))
  
 // parse application/json
@@ -101,6 +90,8 @@ function loadRoutes(callback) {
     expressApp.get('/viewIndemnity', indexController.viewIndemnity);
     expressApp.get('/individus', indexController.individus);
     expressApp.get('/dashboard', indexController.dashboard);
+    expressApp.post('/createObjet', indexController.createObjet);
+    expressApp.get('/objet', indexController.objet);
  
     if (typeof callback != 'undefined') {
         callback();

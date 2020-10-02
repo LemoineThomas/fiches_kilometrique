@@ -1,5 +1,6 @@
 const { Sequelize, DataTypes} = require('sequelize');
 // const sequelize = new Sequelize('sqlite::memory');
+const Individus = require('./modelIndividus');
 const sequelize = new Sequelize({
     dialect: 'sqlite',
     storage: 'path/to/database.sqlite'
@@ -32,6 +33,14 @@ const Vehicules = sequelize.define('Vehicules', {
         type: DataTypes.STRING,
         allowNull: false,
         unique: true
+    },
+    id_individus: {
+        type: DataTypes.INTEGER,
+        required: true,
+        references: {
+            model: Individus,
+            key:'id'
+        }
     }
 }, { timestamps: true });
 

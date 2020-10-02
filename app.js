@@ -3,10 +3,6 @@ var app = {};
 function start(callback) {
     init(function() {
         /* On démarre le routeur défini juste avant */
-        /**c ici ton probleme */
-        /*je sais, quand je fais la solution sans controller, j'ai pas de problème */
-        /**je modifi ton fichier router essaye dans un instant */
-        /* ok */
         app.router.start(function() {
             if(typeof callback != 'undefined') {
                 callback();

@@ -4,17 +4,21 @@
     <table class="table table-hover">
         <thead>
           <tr>
-            <th scope="col">Nom</th>
-            <th scope="col">Prénom</th>
-            <th scope="col">Fonction</th>
+            <th scope="col">Marque</th>
+            <th scope="col">Modèle</th>
+            <th scope="col">Puissance</th>
+            <th scope="col">Année</th>
+            <th scope="col">Immatriculation</th>
           </tr>
         </thead>
         <tbody>
             <%  vehicules.forEach(element => { %>
                 <tr>
-                    <td><%= element.nom %></td>
-                    <td><%= element.prenom %></td>
-                    <td>@<%= element.fonction %></td>
+                    <td><%= element.marque %></td>
+                    <td><%= element.modele %></td>
+                    <td><%= element.puissance %></td>
+                    <td><%= element.annee %></td>
+                    <td><%= element.immatriculation %></td>
                 </tr>
             <% }) %>
         </tbody>

@@ -1,0 +1,34 @@
+<%- include ('../layout.ejs') %>
+<h2 class="mt-4"><%= title %></h2>
+
+<% if (objets != "") { %>
+    <table class="table table-hover">
+        <thead>
+          <tr>
+            <th scope="col">Objet</th>
+          </tr>
+        </thead>
+        <tbody>
+            <%  objets.forEach(element => { %>
+                <tr>
+                    <td><%= element.nom %></td>
+                </tr>
+            <% }) %>
+        </tbody>
+    </table>
+<% }else{ %>
+    <p>Aucune objet a été ajouté.</p>
+<% } %>
+
+<form action="/createobjet" method="POST">
+    <div class="form-row">
+        <div class="col">
+            <input type="text" class="form-control" placeholder="Objet" name="nom">
+        </div>
+        <div class="col-auto">
+            <button type="submit" class="btn btn-primary mb-2">Ajouter un objet</button>
+        </div>
+    </div>
+</form>
+
+<%- include ('../footer.ejs') %>
