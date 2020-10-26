@@ -41,40 +41,19 @@ const Fiches = sequelize.define('Fiches', {
     commentaire: {
         type: DataTypes.STRING,
         allowNull: false
-    },
-    id_individus: {
-        type: DataTypes.INTEGER,
-        required: true,
-        references: {
-            model: Individus,
-            key:'id'
-        }
-    },
-    id_vehicule: {
-        type: DataTypes.INTEGER,
-        required: true,
-        references: {
-            model: Vehicules,
-            key:'id'
-        }
-    },
-    id_entite: {
-        type: DataTypes.INTEGER,
-        required: true,
-        references: {
-            model: Entites,
-            key:'id'
-        }
-    }
-    ,
-    id_objet: {
-        type: DataTypes.INTEGER,
-        required: true,
-        references: {
-            model: Objet,
-            key:'id'
-        }
     }
 }, { timestamps: true });
+
+Individus.hasMany(Fiches);
+Fiches.belongsTo(Individus);
+
+Entites.hasMany(Fiches);
+Fiches.belongsTo(Entites);
+
+Objet.hasMany(Fiches);
+Fiches.belongsTo(Objet);
+
+Vehicules.hasMany(Fiches);
+Fiches.belongsTo(Vehicules);
 
 module.exports = Fiches;

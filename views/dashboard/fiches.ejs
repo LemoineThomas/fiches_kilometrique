@@ -11,7 +11,7 @@
         <tbody>
             <%  fiches.forEach(element => { %>
                 <tr>
-                    <td><%= element.date %></td>
+                    <td><form method="post" action="afficherFiche"><input type="hidden" name="id" value="<%= element.id %>" /><%= element.date %> <input class="btn btn-primary" type="submit" value="Consulter" /></form></td>
                 </tr>
             <% }) %>
         </tbody>
@@ -21,4 +21,5 @@
 <% } %>
 
 <a class="btn btn-info btn-block" href="/createFiche">Créer une fiche</a>
+
 <%- include ('../footer.ejs') %>

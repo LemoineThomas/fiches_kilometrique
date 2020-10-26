@@ -210,7 +210,7 @@ controller.createEntity = async (req, res) => {
 }
 
 controller.fiches = async (req, res) => {
-
+    
     await Fiches.sync()
     const fiches = await Fiches.findAll({})
 
@@ -234,6 +234,10 @@ controller.viewCreateFiche = async (req, res) => {
 }
 
 controller.createFiche = async (req, res) => {
+    const entites = await Entites.findAll({})
+    const vehicules = await Vehicules.findAll({})
+    const objets = await Objet.findAll({})
+
     const fiche = await Fiches.create({
         compteurDepart : req.body.compteurD,
         compteurArrivee : req.body.compteurA,
@@ -241,16 +245,18 @@ controller.createFiche = async (req, res) => {
         lieuDepart : req.body.lieuD,
         lieuArrivee : req.body.lieuA,
         commentaire : req.body.commentaire,
-        id_individus: req.body.individus,
-        id_vehicule: req.body.vehicule,
-        id_entite: req.body.entite,
-        id_objet: req.body.objet
+        IndividuId: req.body.individus,
+        VehiculeId: req.body.vehicule,
+        EntiteId: req.body.entite,
+        ObjetId: req.body.objet
     });
 
     const fiches = await Fiches.findAll({})
     res.render('dashboard/createFiche.ejs', {
         title: "Créer une fiches",
-        fiches: fiches
+        entites: entites,
+        vehicules: vehicules,
+        objets: objets
     })
 }
 
@@ -316,6 +322,26 @@ controller.createObjet = async (req, res) => {
         })
     }
 
+}
+
+
+controller.afficherFiche = async (req, res) => {
+    const fiche = await Fiches.findOne({ id: req.body.id, include: [{model : Entites}, {model : Vehicules}, {model : Objet}, {model : Individus}]})
+    const fiches = await Fiches.findAll({ where: {
+        vehiculeId: fiche.Vehicule.id
+      }, include: [{model : Entites}, {model : Vehicules}, {model : Objet}, {model : Individus}]})
+
+
+    res.render('dashboard/fiche.ejs', {
+        title: "Fiche",
+        fiche: fiche,
+        fiches: fiches
+    })
+}
+
+
+controller.genererPdf = async (req, res) => {
+    console.log(req.body.fiche)
 }
 
 module.exports = controller;

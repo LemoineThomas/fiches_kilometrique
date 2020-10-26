@@ -1,0 +1,174 @@
+<%- include ('../layout.ejs') %>
+<h2 class="mt-4"><%= title %></h2>
+
+<p>Entreprise : <%= fiche.Entite.nom %></p>
+<p>Nom : ...</p>
+<p>Type de vehicule : <%= fiche.Vehicule.marque %></p>
+<p>Année : <%= fiche.Vehicule.annee %></p>
+<br/>
+<p>Relevé de compteur au départ : <%= fiche.compteurDepart %></p>
+<p>Relevé de compteur à l'arrivée : <%= fiche.compteurArrivee %></p>
+<p>Kilométres parcourus : <%= fiche.compteurArrivee - fiche.compteurDepart %>Km</p>
+<p>Compensateur : <%= compensateur(fiche.Vehicule.puissance, 20000) %></p>
+<br/>
+
+<table style="margin-bottom: 50px">
+    <tr style="border : 1px solid black">
+      <th style="border : 1px solid black" rowspan="2">Date</th>
+      <th style="border : 1px solid black">Trajet</th>
+      <th style="border : 1px solid black">Commentaire</th>
+      <th style="border : 1px solid black" colspan="3">Relevé de compteur</th>
+    </tr>
+    <tr style="border : 1px solid black">
+      <td style="border : 1px solid black">(De où à où)</td>
+      <td style="border : 1px solid black">(Ex: Client, Projet, Réunion...)</td>
+      <td style="border : 1px solid black">Départ</td>
+      <td style="border : 1px solid black">Arrivée</td>
+      <td style="border : 1px solid black">Distance</td>
+    </tr>
+    <% distance = 0;%>
+    <% fiches.forEach(element => { %>
+    <%    distance += element.compteurArrivee - element.compteurDepart; %>
+        <tr style="border : 1px solid black">
+            <td style="border : 1px solid black"><%= element.date %></td>
+            <td style="border : 1px solid black">De <%= element.lieuDepart %> à <%= element.lieuArrivee %></td>
+            <td style="border : 1px solid black"><%= element.commentaire %></td>
+            <td style="border : 1px solid black"><%= element.compteurDepart %></td>
+            <td style="border : 1px solid black"><%= element.compteurArrivee %></td>
+            <td style="border : 1px solid black"><%= element.compteurArrivee - element.compteurDepart %></td>
+        </tr>
+    <% }) %>
+        <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td style="border : 1px solid black" colspan="2">Total kilomètres parcourus</td>
+            <td style="border : 1px solid black"><%= distance %> km</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td style="border : 1px solid black" colspan="2">Montant indemnité</td>
+            <td style="border : 1px solid black"> <%= calculIndemnite(fiche.Vehicule.puissance, distance) %></td>
+        </tr>
+</table>
+
+<button type="submit" class="btn btn-primary" style="margin-bottom: 50px;" onclick="sendDataForPDF('<%= JSON.stringify(fiche) %>', '<%= JSON.stringify(fiches) %>');">Générer le PDF</button>
+
+
+
+
+<% 
+    function compensateur(puissance, kilometres){
+        var txt = puissance;
+        var puissance = txt.match(/\d/g);
+        puissance = puissance.join("");
+        if(puissance <= 3){
+            if(kilometres <= 5000){
+                return "0.410"
+            }else if(kilometres <= 20000){
+                return "0.245 + 824"
+            }else if(kilometres >= 20001){
+                return "0.285"
+            }
+        }else if(puissance == 4){
+            if(kilometres <= 5000){
+                return "0.493"
+            }else if(kilometres <= 20000){
+                return "0.270 + 1082"
+            }else if(kilometres >= 20001){
+                return "0.332"
+            }
+        }else if(puissance == 5){
+            if(kilometres <= 5000){
+                return "0.543"
+            }else if(kilometres <= 20000){
+                return "0.305 + 1188"
+            }else if(kilometres >= 20001){
+                return "0.364"
+            }   
+        }else if(puissance == 6){
+            if(kilometres <= 5000){
+                return "0.568"
+            }else if(kilometres <= 20000){
+                return "0.320 + 1244"
+            }else if(kilometres >= 20001){
+                return "0.382"
+            }
+        }else if(puissance >= 7){
+            if(kilometres <= 5000){
+                return "0.595"
+            }else if(kilometres <= 20000){
+                return "0.337 + 1288"
+            }else if(kilometres >= 20001){
+                return "0.401"
+            }
+        }
+    }
+
+    function calculIndemnite(puissance, kilometres){
+        var txt = puissance;
+        var puissance = txt.match(/\d/g);
+        puissance = puissance.join("");
+        if(puissance <= 3){
+            if(kilometres <= 5000){
+                return distance * 0.410
+            }else if(kilometres <= 20000){
+                return distance * 0.245 + 824
+            }else if(kilometres >= 20001){
+                return distance * 0.285
+            }
+        }else if(puissance == 4){
+            if(kilometres <= 5000){
+                return distance * 0.493
+            }else if(kilometres <= 20000){
+                return distance * 0.270 + 1082
+            }else if(kilometres >= 20001){
+                return distance * 0.332
+            }
+        }else if(puissance == 5){
+            if(kilometres <= 5000){
+                return distance * 0.543
+            }else if(kilometres <= 20000){
+                return distance * 0.305 + 1188
+            }else if(kilometres >= 20001){
+                return distance * 0.364
+            }   
+        }else if(puissance == 6){
+            if(kilometres <= 5000){
+                return distance * 0.568
+            }else if(kilometres <= 20000){
+                return distance * 0.320 + 1244
+            }else if(kilometres >= 20001){
+                return distance * 0.382
+            }
+        }else if(puissance >= 7){
+            if(kilometres <= 5000){
+                return distance * 0.595
+            }else if(kilometres <= 20000){
+                return distance * 0.337 + 1288
+            }else if(kilometres >= 20001){
+                return distance * 0.401
+            }
+        }
+    }
+%>
+
+<script>
+
+    function sendDataForPDF(fiche, fiches){
+        alert(fiche);
+        var _data = {};
+        // set test property:
+        _data.fiche = fiche;
+        _data.fiches = fiches;
+
+        // Make an Ajax request
+        $.post('/genererPdf', _data, function(result) {
+        console.log('result', result);
+        });
+    }  
+
+</script>
+<%- include ('../footer.ejs') %>

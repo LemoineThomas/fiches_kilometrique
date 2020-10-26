@@ -92,6 +92,8 @@ function loadRoutes(callback) {
     expressApp.get('/dashboard', indexController.dashboard);
     expressApp.post('/createObjet', indexController.createObjet);
     expressApp.get('/objet', indexController.objet);
+    expressApp.post('/afficherFiche', indexController.afficherFiche);
+    expressApp.post('/genererPdf', indexController.genererPdf);
  
     if (typeof callback != 'undefined') {
         callback();
