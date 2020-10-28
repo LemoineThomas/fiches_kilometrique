@@ -341,7 +341,168 @@ controller.afficherFiche = async (req, res) => {
 
 
 controller.genererPdf = async (req, res) => {
-    console.log(req.body.fiche)
+    var fs = require('fs');
+    var pdf = require('html-pdf');
+    console.log(JSON.parse(req.body.fiche))
+    var fiche = JSON.parse(req.body.fiche)
+    var fiches = JSON.parse(req.body.fiches)
+
+    var htm = ""
+    htm += "<p>Entreprise :" + fiche.Entite.nom + "</p>"
+    htm += "<p>Nom : ...</p>"
+    htm += "<p>Type de vehicule : +" + fiche.Vehicule.marque + "</p>"
+    htm += "<p>Année : " +  fiche.Vehicule.annee + "</p>"
+    htm += "<br/>"
+    htm += "<p>Relevé de compteur au départ : "+ fiche.compteurDepart + "</p>"
+    htm += "<p>Relevé de compteur à l'arrivée : "+ fiche.compteurArrivee + "</p>"
+    htm += "<p>Kilométres parcourus : " +fiche.compteurArrivee - fiche.compteurDepart + "Km</p>"
+    htm += "<p>Compensateur : " + compensateur(fiche.Vehicule.puissance, 20000) + "</p>"
+    htm += "<br/>"
+
+    htm += "<table style='margin-bottom: 50px'>"
+    htm +=     "<tr style='border : 1px solid black'>"
+    htm +=     "<th style='border : 1px solid black' rowspan='2'>Date</th>"
+    htm +=     "<th style='border : 1px solid black'>Trajet</th>"
+    htm +=     "<th style='border : 1px solid black'>Commentaire</th>"
+    htm +=     "<th style='border : 1px solid black' colspan='3'>Relevé de compteur</th>"
+    htm +=     "</tr>"
+    htm +=     "<tr style='border : 1px solid black'>"
+    htm +=     "<td style='border : 1px solid black'>(De où à où)</td>"
+    htm +=     "<td style='border : 1px solid black'>(Ex: Client, Projet, Réunion...)</td>"
+    htm +=     "<td style='border : 1px solid black'>Départ</td>"
+    htm +=     "<td style='border : 1px solid black'>Arrivée</td>"
+    htm +=     "<td style='border : 1px solid black'>Distance</td>"
+    htm +=     "</tr>"
+        distance = 0;
+        fiches.forEach(element => { 
+            distance += element.compteurArrivee - element.compteurDepart;
+            htm +=        "<tr style='border : 1px solid black'>"
+            htm +=            "<td style='border : 1px solid black'>"+ element.date + "</td>"
+            htm +=            "<td style='border : 1px solid black'>De " +  element.lieuDepart +" à "+ element.lieuArrivee + "</td>"
+            htm +=            "<td style='border : 1px solid black'>" + element.commentaire +"</td>"
+            htm +=            "<td style='border : 1px solid black'>" + element.compteurDepart +"</td>"
+            htm +=            "<td style='border : 1px solid black'>" +  element.compteurArrivee +"</td>"
+            htm +=            "<td style='border : 1px solid black'>" + (element.compteurArrivee - element.compteurDepart) +"</td>"
+            htm +=        "</tr>"
+        }) 
+        htm +=    "<tr>"
+        htm +=        "<td></td>"
+        htm +=        "<td></td>"
+        htm +=        "<td></td>"
+        htm +=        "<td style='border : 1px solid black' colspan='2'>Total kilomètres parcourus</td>"
+        htm +=        "<td style='border : 1px solid black'>" + distance +" km</td>"
+        htm +=    "</tr>"
+        htm +=    "<tr>"
+        htm +=        "<td></td>"
+        htm +=        "<td></td>"
+        htm +=        "<td></td>"
+        htm +=        "<td style='border : 1px solid black' colspan='2'>Montant indemnité</td>"
+        htm +=        "<td style='border : 1px solid black'>" +  calculIndemnite(fiche.Vehicule.puissance, distance) + "</td>"
+        htm +=    "</tr>"
+        htm += "</table>"
+
+
+    var options = { orientation: "landscape" };
+    pdf.create(htm, options).toStream(function(err, stream){
+        stream.pipe(fs.createWriteStream('./monpdf.pdf'));
+    });
+
+
+
+
+    function compensateur(puissance, kilometres){
+        var txt = puissance;
+        var puissance = txt.match(/\d/g);
+        puissance = puissance.join("");
+        if(puissance <= 3){
+            if(kilometres <= 5000){
+                return "0.410"
+            }else if(kilometres <= 20000){
+                return "0.245 + 824"
+            }else if(kilometres >= 20001){
+                return "0.285"
+            }
+        }else if(puissance == 4){
+            if(kilometres <= 5000){
+                return "0.493"
+            }else if(kilometres <= 20000){
+                return "0.270 + 1082"
+            }else if(kilometres >= 20001){
+                return "0.332"
+            }
+        }else if(puissance == 5){
+            if(kilometres <= 5000){
+                return "0.543"
+            }else if(kilometres <= 20000){
+                return "0.305 + 1188"
+            }else if(kilometres >= 20001){
+                return "0.364"
+            }   
+        }else if(puissance == 6){
+            if(kilometres <= 5000){
+                return "0.568"
+            }else if(kilometres <= 20000){
+                return "0.320 + 1244"
+            }else if(kilometres >= 20001){
+                return "0.382"
+            }
+        }else if(puissance >= 7){
+            if(kilometres <= 5000){
+                return "0.595"
+            }else if(kilometres <= 20000){
+                return "0.337 + 1288"
+            }else if(kilometres >= 20001){
+                return "0.401"
+            }
+        }
+    }
+
+    function calculIndemnite(puissance, kilometres){
+        var txt = puissance;
+        var puissance = txt.match(/\d/g);
+        puissance = puissance.join("");
+        if(puissance <= 3){
+            if(kilometres <= 5000){
+                return distance * 0.410
+            }else if(kilometres <= 20000){
+                return distance * 0.245 + 824
+            }else if(kilometres >= 20001){
+                return distance * 0.285
+            }
+        }else if(puissance == 4){
+            if(kilometres <= 5000){
+                return distance * 0.493
+            }else if(kilometres <= 20000){
+                return distance * 0.270 + 1082
+            }else if(kilometres >= 20001){
+                return distance * 0.332
+            }
+        }else if(puissance == 5){
+            if(kilometres <= 5000){
+                return distance * 0.543
+            }else if(kilometres <= 20000){
+                return distance * 0.305 + 1188
+            }else if(kilometres >= 20001){
+                return distance * 0.364
+            }   
+        }else if(puissance == 6){
+            if(kilometres <= 5000){
+                return distance * 0.568
+            }else if(kilometres <= 20000){
+                return distance * 0.320 + 1244
+            }else if(kilometres >= 20001){
+                return distance * 0.382
+            }
+        }else if(puissance >= 7){
+            if(kilometres <= 5000){
+                return distance * 0.595
+            }else if(kilometres <= 20000){
+                return distance * 0.337 + 1288
+            }else if(kilometres >= 20001){
+                return distance * 0.401
+            }
+        }
+    }
 }
 
 module.exports = controller;
